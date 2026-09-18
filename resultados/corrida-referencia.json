@@ -1,0 +1,120 @@
+{
+  "cuenta": {
+    "empresa": "Grupo Meridian",
+    "contacto": "Daniela",
+    "dias_sin_contacto": 47,
+    "contexto": "cliente histórico de consultoría que dejó de responder hace mes y medio"
+  },
+  "iteracion": 5,
+  "max_iteraciones": 5,
+  "mensaje_actual": "Asunto: ¿Qué cambió en Grupo Meridian desde que nos vimos?\n\nDaniela,\n\nHace meses que no nos cruzamos. Antes trabajábamos juntos en [solución específica]. ¿Sigue siendo relevante para ustedes o pivotaron hacia otra cosa?\n\nPregunto porque en nuestro lado pasaron cosas: optimizamos tiempos de implementación en un 40% y agregamos integraciones que antes no teníamos.\n\nPero lo que realmente me interesa es saber si en Grupo Meridian hay algo nuevo que necesiten resolver ahora.\n\n¿Puedo robarte 15 minutos el martes o miércoles para que me cuentes qué está pasando?\n\nCordialmente,\n[Nombre]",
+  "metrica_actual": 70.0,
+  "mejor_mensaje": "Asunto: ¿Qué cambió en Grupo Meridian desde que nos vimos?\n\nDaniela,\n\nHace meses que no nos cruzamos. Antes trabajábamos juntos en [solución específica]. ¿Sigue siendo relevante para ustedes o pivotaron hacia otra cosa?\n\nPregunto porque en nuestro lado pasaron cosas: optimizamos tiempos de implementación en un 40% y agregamos integraciones que antes no teníamos.\n\nPero lo que realmente me interesa es saber si en Grupo Meridian hay algo nuevo que necesiten resolver ahora.\n\n¿Puedo robarte 15 minutos el martes o miércoles para que me cuentes qué está pasando?\n\nCordialmente,\n[Nombre]",
+  "mejor_metrica": 70.0,
+  "feedback_entorno": "- Palabras: 90 (aceptable (76-95))\n- Usa el nombre del contacto: sí\n- Incluye una pregunta directa: sí\n- Propuesta de valor concreta: sí\n- Incluye un dato/cifra concreta (ej. 23%, 15 min): sí\n- CTA de baja fricción (ej. 'una llamada de 15 min'): sí\n- Clichés robóticos detectados: 0",
+  "historial": [
+    {
+      "iteracion": 1,
+      "metrica": 5.0,
+      "palabras": 235,
+      "rasgos": {
+        "usa_nombre_contacto": false,
+        "brevedad": "larga (235 palabras)",
+        "pregunta_directa": false,
+        "propuesta_valor": false,
+        "dato_concreto": false,
+        "cta_baja_friccion": false,
+        "cliches_detectados": 1
+      },
+      "mensaje": "Asunto: Reactivación de servicios - Grupo Meridian\n\nEstimado cliente,\n\nLe escribo en esta ocasión para ponernos en contacto nuevamente tras notar que no hemos tenido comunicación en un tiempo considerable. Desde Grupo Meridian queremos asegurar que continúa recibiendo el mejor servicio y que sus necesidades están siendo cubiertas de manera satisfactoria.\n\nEntendemos que en ocasiones los clientes pueden estar ocupados o sus prioridades pueden cambiar, sin embargo, consideramos importante mantener una relación constante y fluida con nuestros colaboradores comerciales. Es por ello que nos permitimos contactarle para conocer el estado actual de su situación y si existe algo en lo que podamos mejorar o si hay nuevas oportunidades que podamos explorar juntos.\n\nDurante este período, en Grupo Meridian hemos continuado innovando y desarrollando nuevas soluciones que podrían ser de interés para su operación. Nos gustaría tener la oportunidad de presentarle las últimas novedades en nuestro portafolio de servicios y productos que hemos diseñado pensando en las necesidades del mercado actual.\n\nSi tiene alguna inquietud respecto a nuestros servicios anteriores, o si existe algo que no haya funcionado como se esperaba, nos encantaría escuchar sus comentarios para poder subsanar cualquier inconveniente que haya podido surgir.\n\nLe invitamos cordialmente a que se comunique con nosotros en su conveniencia para agendar una breve conversación donde podamos evaluar cómo Grupo Meridian puede seguir siendo un aliado estratégico en sus objetivos empresariales.\n\nQuedo atento a sus comentarios.\n\nCordialmente,\n[Nombre]\nGrupo Meridian"
+    },
+    {
+      "iteracion": 2,
+      "metrica": 50.0,
+      "palabras": 113,
+      "rasgos": {
+        "usa_nombre_contacto": false,
+        "brevedad": "larga (113 palabras)",
+        "pregunta_directa": true,
+        "propuesta_valor": true,
+        "dato_concreto": true,
+        "cta_baja_friccion": true,
+        "cliches_detectados": 0
+      },
+      "mensaje": "Asunto: Reactivación de servicios - Grupo Meridian\n\nEstimado,\n\nNotamos que no hemos tenido contacto en un tiempo y queremos asegurar que Grupo Meridian siga siendo un aliado para ustedes.\n\nEn estos meses hemos innovado en nuestras soluciones. ¿Hay algo específico que no haya funcionado como esperaban, o nuevas necesidades que hayan surgido en su operación?\n\nEntendemos que las prioridades cambian. Por eso nos gustaría escuchar directamente de usted: ¿qué sería más útil para Grupo Meridian en este momento?\n\nNos encantaría agendar una llamada de 15 minutos para conversar sin compromiso y explorar si hay oportunidades de colaboración que tengan sentido para ambos.\n\n¿Le vendría bien el próximo martes o miércoles?\n\nCordialmente,\n[Nombre]\nGrupo Meridian"
+    },
+    {
+      "iteracion": 3,
+      "metrica": 62.0,
+      "palabras": 113,
+      "rasgos": {
+        "usa_nombre_contacto": true,
+        "brevedad": "larga (113 palabras)",
+        "pregunta_directa": true,
+        "propuesta_valor": true,
+        "dato_concreto": true,
+        "cta_baja_friccion": true,
+        "cliches_detectados": 0
+      },
+      "mensaje": "Asunto: Reactivación de servicios - Grupo Meridian\n\nDaniela,\n\nNotamos que no hemos tenido contacto en un tiempo y queremos asegurar que Grupo Meridian siga siendo un aliado para ustedes.\n\nEn estos meses hemos innovado en nuestras soluciones. ¿Hay algo específico que no haya funcionado como esperaban, o nuevas necesidades que hayan surgido en su operación?\n\nEntendemos que las prioridades cambian. Por eso me gustaría escuchar directamente de ti: ¿qué sería más útil para Grupo Meridian en este momento?\n\nMe encantaría agendar una llamada de 15 minutos para conversar sin compromiso y explorar si hay oportunidades de colaboración que tengan sentido para ambos.\n\n¿Te vendría bien el próximo martes o miércoles?\n\nCordialmente,\n[Nombre]\nGrupo Meridian"
+    },
+    {
+      "iteracion": 4,
+      "metrica": 62.0,
+      "palabras": 114,
+      "rasgos": {
+        "usa_nombre_contacto": true,
+        "brevedad": "larga (114 palabras)",
+        "pregunta_directa": true,
+        "propuesta_valor": true,
+        "dato_concreto": true,
+        "cta_baja_friccion": true,
+        "cliches_detectados": 0
+      },
+      "mensaje": "Asunto: ¿Qué cambió en Grupo Meridian desde la última vez?\n\nDaniela,\n\nPasaron varios meses sin contacto y me pregunto si fue porque:\n- Las prioridades giraron hacia otro lado\n- Algo no funcionó como esperaban\n- Simplemente quedó en el radar\n\nLo pregunto porque en nuestro lado sí cambió algo: redujimos el tiempo de implementación a 3 semanas (antes eran 8) y varios clientes en logística están usando esto para resolver el cuello de botella en distribución.\n\n¿Te suena relevante para Grupo Meridian, o están en otro punto completamente diferente ahora?\n\nSi tiene sentido, me encantaría una llamada de 15 minutos el próximo martes o miércoles para entender mejor dónde están.\n\n¿Cuál te viene mejor?\n\nCordialmente,\n[Nombre]"
+    },
+    {
+      "iteracion": 5,
+      "metrica": 70.0,
+      "palabras": 90,
+      "rasgos": {
+        "usa_nombre_contacto": true,
+        "brevedad": "aceptable (76-95)",
+        "pregunta_directa": true,
+        "propuesta_valor": true,
+        "dato_concreto": true,
+        "cta_baja_friccion": true,
+        "cliches_detectados": 0
+      },
+      "mensaje": "Asunto: ¿Qué cambió en Grupo Meridian desde que nos vimos?\n\nDaniela,\n\nHace meses que no nos cruzamos. Antes trabajábamos juntos en [solución específica]. ¿Sigue siendo relevante para ustedes o pivotaron hacia otra cosa?\n\nPregunto porque en nuestro lado pasaron cosas: optimizamos tiempos de implementación en un 40% y agregamos integraciones que antes no teníamos.\n\nPero lo que realmente me interesa es saber si en Grupo Meridian hay algo nuevo que necesiten resolver ahora.\n\n¿Puedo robarte 15 minutos el martes o miércoles para que me cuentes qué está pasando?\n\nCordialmente,\n[Nombre]"
+    }
+  ],
+  "sin_mejora_seguidas": 0,
+  "curva_mejor_acumulado": [
+    {
+      "iteracion": 1,
+      "intento": 5.0,
+      "mejor_acumulado": 5.0
+    },
+    {
+      "iteracion": 2,
+      "intento": 50.0,
+      "mejor_acumulado": 50.0
+    },
+    {
+      "iteracion": 3,
+      "intento": 62.0,
+      "mejor_acumulado": 62.0
+    },
+    {
+      "iteracion": 4,
+      "intento": 62.0,
+      "mejor_acumulado": 62.0
+    },
+    {
+      "iteracion": 5,
+      "intento": 70.0,
+      "mejor_acumulado": 70.0
+    }
+  ]
+}
