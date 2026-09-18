@@ -128,6 +128,7 @@ Esta elección evita pedir una llave de OpenRouter y elimina variabilidad durant
 
 | Síntoma | Qué dices | Qué haces |
 |---|---|---|
+| PASO 1 falla al instalar | “Colab no pudo preparar una librería; ahora veremos el detalle real.” | Comprueba internet y repite **PASO 1**. La nueva versión usa una carpeta aislada y solo tres dependencias. |
 | PASO 1 no descarga | “La conexión con GitHub falló; el mensaje ahora nos dirá por qué.” | Comprueba internet y repite **PASO 1**. Puede reejecutarse sin reiniciar Colab. |
 | La llave falla | “Crea una llave nueva y pégala sin espacios.” | Repite solo la celda **PASO 2**. |
 | No sale el campo oculto | “La segunda celda todavía no corrió.” | Pulsa el triángulo de **PASO 2**. |

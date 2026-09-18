@@ -64,6 +64,13 @@ class GuidedNotebookTests(unittest.TestCase):
         self.assertIn("capture_output=True", self.source)
         self.assertIn("No se pudo descargar el ejercicio", self.source)
 
+    def test_colab_uses_a_minimal_isolated_installation(self) -> None:
+        self.assertIn("PACKAGE_DIR", self.source)
+        self.assertIn('"--target"', self.source)
+        self.assertIn("PACKAGE_MARKER", self.source)
+        self.assertIn("Detalle de pip", self.source)
+        self.assertNotIn('"langchain-openai==1.6.2"', self.source)
+
 
 if __name__ == "__main__":
     unittest.main()

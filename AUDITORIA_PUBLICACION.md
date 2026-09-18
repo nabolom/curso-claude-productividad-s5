@@ -26,8 +26,8 @@ La ruta oficial para alumnos ya no requiere terminal, instalación local ni una 
 | Traza | Aprobado | El notebook activa tracing, consulta la corrida recién creada y solicita su URL directa. |
 | Código | Aprobado | El script principal y las celdas del notebook compilan. |
 | Estilo | Aprobado | El código pasa Ruff y conserva formato estable. |
-| Dependencias | Aprobado | Las versiones están fijadas y el entorno no reporta dependencias rotas. |
-| Pruebas | Aprobado | Las nueve pruebas automatizadas pasan, incluida la regresión de doble ejecución de PASO 1. |
+| Dependencias | Aprobado | La ruta Colab instala solo LangGraph, LangSmith y python-dotenv en una carpeta aislada. Se verificó con Python 3.13.14 y pip real. |
+| Pruebas | Aprobado | Las diez pruebas automatizadas pasan, incluidas las regresiones de doble ejecución e instalación mínima aislada. |
 | Modo avanzado | Aprobado | Una corrida de una iteración recibió respuesta real de Claude mediante OpenRouter. |
 
 ## Qué puede afirmarse

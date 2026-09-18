@@ -75,6 +75,7 @@ LangGraph modela esta lógica mediante estado, nodos y rutas condicionales.[5]
 
 | Síntoma | Causa probable | Solución exacta |
 |---|---|---|
+| `No se pudieron preparar las librerías` | Colab no pudo descargar un paquete o encontró un bloqueo temporal de red | Lee el detalle que aparece al final, comprueba internet y repite **PASO 1**. La instalación es aislada y no modifica las librerías base de Colab. |
 | `No se pudo descargar el ejercicio` | Conexión temporal con GitHub | Comprueba internet y repite **PASO 1**. El mensaje ahora muestra el detalle real del error. |
 | `LangSmith no aceptó la llave` | Llave incompleta, vencida o con espacios | Crea una llave personal nueva y ejecuta otra vez la celda **PASO 2**. |
 | No aparece el campo para pegar | Colab no llegó a la segunda celda | Ejecuta manualmente la celda **PASO 2** con el botón triangular. |
