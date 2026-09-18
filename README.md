@@ -1,85 +1,111 @@
-# S5 · Hill Climbing con LangGraph y LangSmith
+# S5 · Ejecuta un loop de Hill Climbing y míralo en LangSmith
 
 **Claude para Productividad · Nivel 2 · León Ruiz / Collective Academy**
 
-Este repositorio contiene la demostración de la Sesión 5: un agente que no acepta su primer borrador. El sistema **redacta, mide, conserva el mejor resultado y decide si debe repetir**. La ejecución se orquesta con LangGraph; Claude genera los borradores; LangSmith permite observar la traza completa.
+En esta actividad ejecutarás un agente que **redacta, mide, conserva el mejor resultado y decide si debe repetir**. Al final abrirás una traza creada en tu propia cuenta de LangSmith.
 
-> **Empieza aquí:** recorre esta página de arriba hacia abajo. La corrida de referencia se puede reproducir sin claves. El modo en vivo es opcional.
+> **No necesitas programar, usar terminal ni configurar OpenRouter.** Solo necesitas una cuenta de LangSmith y una API key personal.
 
-## Qué ocurrió en el ejercicio
+## Ejercicio oficial · 10–12 minutos
 
-El caso usa una cuenta ficticia llamada **Grupo Meridian**. El objetivo es mejorar un correo de reactivación. Cada versión recibe una puntuación didáctica de 0 a 100. La regla es simple: si una versión supera el mejor puntaje previo, se conserva; si no, se descarta.
+### Paso 1 · Crea tu llave
 
-La corrida registrada produjo esta secuencia:
+1. Abre [LangSmith Settings](https://smith.langchain.com/settings) e inicia sesión.
+2. Entra a **API Keys**.
+3. Presiona **Create API Key**.
+4. Elige una llave personal, créala y cópiala. LangSmith solo muestra el valor una vez.[1]
+
+No compartas esa llave en el chat, en el repositorio ni con otra persona.
+
+### Paso 2 · Abre el ejercicio
+
+[![Abrir en Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/nabolom/curso-claude-productividad-s5/blob/main/EJECUTA_S5_EN_LANGSMITH.ipynb)
+
+### Paso 3 · Ejecuta todo
+
+1. En Colab, abre **Entorno de ejecución → Ejecutar todas**.
+2. Cuando aparezca `Pega tu API key de LangSmith`, pega tu llave y presiona Enter. El texto permanece oculto.
+3. Espera a que aparezca **TU TRAZA ESTÁ LISTA**.
+4. Abre el enlace que imprime el notebook.
+
+Eso es todo. El notebook instala lo necesario, descarga el ejercicio, ejecuta cinco vueltas del grafo y genera el enlace a la traza.
+
+## Qué debes encontrar
+
+Dentro de LangSmith verás repetirse este ciclo:
+
+> **redactar → medir → evaluar → decidir → repetir**
+
+La corrida produce la progresión:
 
 > **5 → 50 → 62 → 62 → 70**
 
-La cuarta ronda no mejoró. Eso no es un error: demuestra que el agente puede probar una alternativa sin reemplazar un resultado mejor.
+La cuarta ronda no supera el récord de 62 y se descarta. Esto no es un fallo. Es evidencia de que el sistema puede probar una alternativa sin reemplazar un resultado mejor.
+
+![Traza de una corrida en LangSmith](assets/traza-langsmith.png)
+
+## La aclaración importante: LangSmith observa, no ejecuta
+
+**LangSmith no es el motor que corre este ejercicio.** Google Colab ejecuta el código de LangGraph y LangSmith recibe la traza para que puedas inspeccionarla. LangSmith Studio sí puede conectarse a una aplicación desplegada o a un servidor local, pero esa ruta exige una configuración técnica adicional que no aporta valor para esta actividad básica/intermedia.[2]
+
+| Componente | Función en esta actividad |
+|---|---|
+| **Google Colab** | Ejecuta el notebook sin instalar nada en tu computadora. |
+| **LangGraph** | Mantiene el estado y controla el ciclo. |
+| **Evaluador** | Aplica la misma rúbrica y calcula el puntaje. |
+| **LangSmith** | Registra los nodos, entradas, salidas y tiempos de la corrida. |
+| **Claude** | Produjo previamente los cinco borradores ficticios que esta ruta reproduce. |
+
+## Qué es real y qué está preparado
+
+**Son nuevos y reales:** la ejecución del grafo, las cinco decisiones, los puntajes recalculados y la traza que aparecerá en tu cuenta.
+
+**Está preparado:** los cinco borradores. Provienen de una corrida previa de Claude para que toda la clase obtenga el mismo resultado sin necesitar una segunda API key.
+
+**Es simulado:** el puntaje llamado “tasa de respuesta”. Es una rúbrica didáctica, no una predicción del comportamiento de un cliente. La actividad no envía correos ni modifica sistemas externos.
 
 ![Curva de la corrida de referencia](assets/curva-hill-climbing.png)
 
-## La arquitectura
+## Tu misión dentro de LangSmith
 
-![Grafo cíclico de LangGraph](assets/grafo-langgraph.png)
+Abre tu traza y encuentra estas cuatro evidencias:
 
-| Componente | Función en el ejercicio |
-|---|---|
-| **LangChain** | Configura la conversación con Claude y realiza cada llamada al modelo. |
-| **LangGraph** | Mantiene el estado y ejecuta el ciclo `redactar → medir → evaluar → decidir`. |
-| **Claude** | Produce el primer borrador y las versiones siguientes. |
-| **Evaluador determinista** | Aplica siempre la misma rúbrica y calcula el puntaje. |
-| **LangSmith** | Registra la ejecución para inspeccionar entradas, salidas, latencia y orden de los pasos. |
+1. El patrón de nodos se repite cinco veces.
+2. La métrica sube de 5 a 62 durante las primeras tres rondas.
+3. La cuarta ronda obtiene 62 y no reemplaza el mejor resultado.
+4. La quinta ronda alcanza 70 y se convierte en el mensaje ganador.
 
-LangGraph modela procesos con estado, nodos y rutas condicionales. En este ejercicio, una ruta condicional regresa de `evaluar` a `redactar` mientras no se cumpla una condición de paro.[1]
+Después responde:
 
-## Qué es real y qué es simulado
+> Si la métrica premiara algo equivocado, ¿qué optimizaría el agente?
 
-La distinción es importante. **El grafo, las llamadas a Claude y la traza de LangSmith son reales.** La “tasa de respuesta” es una **métrica didáctica simulada**. Premia brevedad, personalización, una pregunta directa, valor concreto, una cifra y una llamada a la acción de baja fricción. Penaliza clichés.
+## Para quien quiera profundizar
 
-La demo no envía correos ni se conecta con clientes. Todo termina en un borrador revisable. El puntaje permite estudiar el loop; no predice el comportamiento real de una persona.
-
-## La evidencia en LangSmith
-
-La siguiente captura muestra una corrida real. A la izquierda se repite el patrón `redactar`, `medir`, `evaluar` y `ruta_decision`. Las llamadas `ChatOpenAI` son el adaptador compatible con OpenAI que se usó para invocar a Claude mediante el endpoint de OpenRouter; no indican que el modelo sea de OpenAI.[4]
-
-![Traza de la corrida en LangSmith](assets/traza-langsmith.png)
-
-LangSmith puede recibir automáticamente las trazas de aplicaciones construidas con LangChain y LangGraph. `LANGSMITH_PROJECT` determina el proyecto donde se agrupan.[2] [3]
-
-## Ruta recomendada
-
-1. Lee [`ACTIVIDAD.md`](ACTIVIDAD.md) y explica con tus palabras qué conserva el sistema después de cada ronda.
-2. Abre [`resultados/corrida-referencia.json`](resultados/corrida-referencia.json) y compara los cinco borradores.
-3. Ejecuta el modo de repetición siguiendo [`GUIA_TECNICA.md`](GUIA_TECNICA.md). No necesitas credenciales.
-4. Si quieres crear una corrida nueva con Claude y verla en tu LangSmith, sigue la sección **Modo en vivo** de esa misma guía.
-
-El facilitador puede usar [`GUIA_FACILITADOR.md`](GUIA_FACILITADOR.md) para conducir el walkthrough y responder preguntas frecuentes.
+La [guía técnica](GUIA_TECNICA.md) explica dónde vive cada pieza y cómo ejecutar una corrida nueva con Claude mediante OpenRouter. La [actividad de transferencia](ACTIVIDAD.md) ayuda a diseñar una “colina” para otro proceso. La [guía del facilitador](GUIA_FACILITADOR.md) contiene el guion de clase, manejo de preguntas y plan B.
 
 ## Mapa del repositorio
 
 | Ruta | Contenido |
 |---|---|
-| `demo_hill_climbing.py` | Código del grafo, la rúbrica, las condiciones de paro y ambos modos de ejecución. |
-| `ACTIVIDAD.md` | Ejercicio guiado para diseñar una “colina” propia, sin requerir programación. |
-| `GUIA_TECNICA.md` | Instalación, ejecución, trazas y explicación de dónde vive cada pieza. |
-| `GUIA_FACILITADOR.md` | Guion de demostración, plan B y respuestas a preguntas difíciles. |
-| `resultados/corrida-referencia.json` | Los cinco borradores y puntajes de la corrida publicada. |
-| `assets/` | Grafo, curva y captura limpia de LangSmith. |
-| `tests/` | Pruebas que confirman la secuencia de referencia y el comportamiento del grafo. |
+| `EJECUTA_S5_EN_LANGSMITH.ipynb` | Ruta oficial: abre en Colab, pega una llave y recibe el enlace a la traza. |
+| `demo_hill_climbing.py` | Código del grafo, la rúbrica y los dos modos de ejecución. |
+| `resultados/corrida-referencia.json` | Los cinco borradores ficticios de la corrida original. |
+| `GUIA_TECNICA.md` | Ruta local y extensión avanzada con Claude. |
+| `GUIA_FACILITADOR.md` | Guion preciso para conducir el ejercicio. |
+| `ACTIVIDAD.md` | Plantilla sin código para transferir el patrón a otro proceso. |
+| `AUDITORIA_PUBLICACION.md` | Controles técnicos, pedagógicos y de seguridad. |
 
 ## Regla de seguridad
 
-Nunca publiques tu archivo `.env`, llaves de OpenRouter o LangSmith, datos reales de clientes ni contenido confidencial. El repositorio ignora `.env`, pero esa protección no sustituye una revisión antes de hacer commit.
+Cada alumno utiliza su propia llave. El campo del notebook oculta el texto, no lo guarda en el archivo y lo retira de memoria al terminar. Aun así, una llave debe tratarse como contraseña y revocarse si se comparte accidentalmente.
 
 ## Idea para llevarte
 
 > Un prompt produce una respuesta. Un loop de Hill Climbing produce intentos, los compara con una métrica explícita y conserva evidencia de por qué eligió uno.
 
-No significa que el agente “aprenda” permanentemente ni que la métrica sea verdadera. Significa que **optimiza dentro de una corrida** contra las reglas que una persona diseñó.
+Esto no significa que el modelo adquiera aprendizaje permanente. Significa que el sistema **optimiza dentro de una corrida** contra reglas diseñadas por una persona.
 
 ## Referencias
 
-[1]: https://docs.langchain.com/oss/python/langgraph/quickstart "LangGraph Python quickstart"
-[2]: https://docs.langchain.com/langsmith/observability-quickstart "LangSmith observability quickstart"
-[3]: https://docs.langchain.com/langsmith/log-traces-to-project "Log traces to a specific LangSmith project"
-[4]: https://openrouter.ai/docs/quickstart "OpenRouter quickstart"
+[1]: https://docs.langchain.com/langsmith/create-account-api-key "Create an account and API key · LangSmith Docs"
+[2]: https://docs.langchain.com/langsmith/quick-start-studio "Get started with LangSmith Studio"

@@ -1,158 +1,133 @@
-# Guía técnica · Ejecutar y observar el ejercicio
+# Guía técnica · De Google Colab a una traza propia en LangSmith
 
 **Claude para Productividad · Nivel 2 · S5**
 
-Esta guía responde cuatro preguntas: **dónde vive el agente, cómo se ejecuta, cómo produce otra iteración y dónde se observa**.
+La ruta oficial requiere una sola acción técnica: **pegar una API key personal de LangSmith en un campo oculto**. El notebook hace todo lo demás.
 
-## 1. La big picture
-
-El sistema vive en tres lugares distintos.
+## 1. Qué ejecuta qué
 
 | Pieza | Dónde vive | Qué hace |
 |---|---|---|
-| Código | `demo_hill_climbing.py`, en tu computadora | Define el estado, los nodos, la rúbrica y las condiciones de paro. |
-| Claude | En la nube, accesible mediante OpenRouter | Redacta una nueva versión en el modo en vivo. |
-| Trazas | En tu cuenta de LangSmith | Conserva la secuencia de pasos, entradas, salidas y tiempos. |
+| Notebook | Google Colab | Instala el entorno y dispara la ejecución. |
+| Código | `demo_hill_climbing.py` | Define el estado, la rúbrica, los nodos y las condiciones de paro. |
+| LangGraph | Dentro del proceso de Python | Ejecuta el ciclo y conserva el estado entre nodos. |
+| LangSmith | En la nube | Recibe la traza y permite inspeccionarla. |
+| Claude | En la nube | Generó los borradores de referencia; en el modo avanzado produce borradores nuevos. |
 
-**LangChain** se materializa en `ChatOpenAI(...)` y en `llm.invoke(...)`. **LangGraph** se materializa en `construir_grafo()`, donde se agregan los nodos, las conexiones y la ruta condicional. LangGraph documenta este patrón como un grafo con estado, nodos y rutas condicionales.[1]
+**LangSmith no ejecuta este repositorio por sí solo.** Su función principal en la ruta oficial es la observabilidad. LangSmith Studio puede conectarse a un agente desplegado o a un servidor local, pero exige una configuración técnica adicional.[2]
 
-## 2. Dos formas de ejecutar
+## 2. Ruta oficial para alumnos
 
-| Modo | Qué produce | Credenciales | Uso recomendado |
-|---|---|---|---|
-| `replay` | Recorre con LangGraph los cinco borradores guardados y recalcula la métrica. | Ninguna | Clase, práctica y validación estable. |
-| `live` | Pide a Claude un borrador nuevo en cada ronda. | OpenRouter; LangSmith es opcional | Walkthrough técnico y experimentación. |
+### Paso 1 · Crear una llave personal
 
-El modo `replay` no finge una llamada nueva a Claude. Reproduce con transparencia una corrida pasada para que el grafo y la rúbrica puedan estudiarse sin costo ni riesgo de red.
+1. Abre [LangSmith Settings](https://smith.langchain.com/settings).
+2. Entra a **API Keys**.
+3. Selecciona **Create API Key** y elige una llave personal.
+4. Cópiala. LangSmith solo muestra su valor una vez.[1]
 
-## 3. Preparar el entorno
+### Paso 2 · Abrir el notebook
 
-Necesitas **Python 3.11 o posterior**. Descarga o clona el repositorio y abre una terminal dentro de su carpeta.
+[![Abrir en Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/nabolom/curso-claude-productividad-s5/blob/main/EJECUTA_S5_EN_LANGSMITH.ipynb)
 
-### macOS o Linux
+### Paso 3 · Ejecutar
+
+1. Abre **Entorno de ejecución → Ejecutar todas**.
+2. Pega tu llave cuando aparezca el campo oculto.
+3. Abre el enlace que aparece debajo de **TU TRAZA ESTÁ LISTA**.
+
+El notebook crea o reutiliza el proyecto `S5-HillClimbing-Mi-Traza`. LangSmith agrupa las trazas por proyecto mediante `LANGSMITH_PROJECT`.[3] [4]
+
+## 3. Qué sucede dentro del notebook
+
+El flujo es automático:
+
+1. Instala versiones compatibles de LangGraph, LangChain y LangSmith.
+2. Descarga este repositorio.
+3. Verifica que la llave sea aceptada por LangSmith.
+4. Ejecuta el grafo con cinco borradores ficticios guardados.
+5. Recalcula la rúbrica para cada borrador.
+6. Envía la jerarquía de nodos a LangSmith.
+7. Consulta la corrida recién creada.
+8. Imprime el enlace directo a esa traza.
+9. Retira la llave de la variable temporal del notebook.
+
+La llave no se imprime ni se guarda en el archivo `.ipynb`. Aun así, debe tratarse como una contraseña.
+
+## 4. Qué es nuevo y qué se reproduce
+
+En la ruta oficial, **la ejecución de LangGraph y la traza de LangSmith son nuevas**. Los cinco textos provienen de una corrida previa de Claude. Esto elimina una segunda llave, evita costo de modelo y garantiza que todo el grupo vea la secuencia 5 → 50 → 62 → 62 → 70.
+
+La palabra `replay` describe exactamente ese comportamiento: reproduce las salidas guardadas, pero vuelve a ejecutar los nodos, las decisiones y la evaluación.
+
+## 5. Cómo leer la traza
+
+En el enlace generado, busca la corrida `S5 Hill Climbing Reactivacion`.
+
+1. Abre el nodo raíz y reconoce cinco bloques repetidos.
+2. Abre `redactar` para ver el borrador usado en esa ronda.
+3. Abre `medir` para localizar la métrica y los rasgos detectados.
+4. Abre `evaluar` para comparar el intento con el mejor histórico.
+5. Identifica el regreso de `ruta_decision` hacia `redactar`.
+
+LangGraph modela esta lógica mediante estado, nodos y rutas condicionales.[5]
+
+## 6. Si algo falla
+
+| Síntoma | Causa probable | Solución exacta |
+|---|---|---|
+| `LangSmith no aceptó la llave` | Llave incompleta, vencida o con espacios | Crea una llave personal nueva y ejecuta otra vez la celda **PASO 2**. |
+| No aparece el campo para pegar | Colab no llegó a la segunda celda | Ejecuta manualmente la celda **PASO 2** con el botón triangular. |
+| La corrida terminó, pero no aparece el enlace | La ingestión tardó más de 16 segundos | Espera 10 segundos y repite **PASO 2** y después **PASO 3**. |
+| Colab pide permiso para ejecutar | Es la protección normal de un notebook externo | Confirma solo si la URL corresponde a este repositorio. |
+| La llave pertenece a varios workspaces | LangSmith requiere identificar el workspace | Usa una llave personal de un solo workspace o configura `LANGSMITH_WORKSPACE_ID` con apoyo del facilitador.[1] |
+
+## 7. Extensión avanzada · Generar textos nuevos con Claude
+
+Esta ruta no es necesaria para completar la actividad. Requiere una segunda llave y produce resultados variables.
+
+En una computadora con Python 3.11 o posterior:
 
 ```bash
+git clone https://github.com/nabolom/curso-claude-productividad-s5.git
+cd curso-claude-productividad-s5
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
+cp .env.example .env
 ```
 
-### Windows PowerShell
+En `.env`, agrega tu propia llave de OpenRouter y conserva las variables de LangSmith:
 
-```powershell
-py -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+```dotenv
+OPENROUTER_API_KEY=reemplaza_con_tu_clave
+LANGSMITH_TRACING=true
+LANGSMITH_API_KEY=reemplaza_con_tu_clave
+LANGSMITH_PROJECT=S5-HillClimbing-Reactivacion-Live
 ```
-
-## 4. Reproducir la corrida sin claves
 
 Ejecuta:
 
 ```bash
-python demo_hill_climbing.py
-```
-
-Debes obtener cinco rondas con esta progresión:
-
-```text
-5.0 → 50.0 → 62.0 → 62.0 → 70.0
-```
-
-La salida se guarda en `resultados/ultima-corrida.json`. Ese archivo está ignorado por Git para evitar subir experimentos locales por accidente.
-
-Para comprobar automáticamente la rúbrica y el ciclo:
-
-```bash
-python -m unittest discover -s tests -v
-```
-
-## 5. Ejecutar una corrida nueva con Claude
-
-OpenRouter ofrece un endpoint compatible con clientes OpenAI y permite seleccionar el modelo mediante su identificador.[4] La demo usa `anthropic/claude-haiku-4.5` por defecto.
-
-Copia la plantilla:
-
-```bash
-cp .env.example .env
-```
-
-En Windows PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Abre `.env` y reemplaza únicamente:
-
-```dotenv
-OPENROUTER_API_KEY=reemplaza_con_tu_clave
-```
-
-Después ejecuta:
-
-```bash
 python demo_hill_climbing.py --mode live
 ```
 
-Los resultados variarán porque Claude genera texto nuevo. La rúbrica seguirá siendo determinista: un mismo mensaje siempre recibe el mismo puntaje.
+OpenRouter expone un endpoint compatible con clientes OpenAI y permite seleccionar el modelo mediante su identificador.[6] Los resultados pueden variar porque Claude genera un texto nuevo en cada ronda.
 
-## 6. Activar las trazas en tu propia cuenta de LangSmith
+## 8. Condiciones de paro
 
-Crea una llave en LangSmith y completa estas variables en `.env`:
+El grafo termina cuando ocurre cualquiera de estas condiciones:
 
-```dotenv
-LANGSMITH_TRACING=true
-LANGSMITH_API_KEY=reemplaza_con_tu_clave
-LANGSMITH_PROJECT=S5-HillClimbing-Reactivacion
-```
+- alcanza el máximo de iteraciones;
+- llega a 95 puntos;
+- acumula tres intentos consecutivos sin mejora.
 
-LangSmith usa `LANGSMITH_PROJECT` para agrupar las trazas. Si el proyecto no existe, se crea cuando ingresa la primera traza.[2] [3]
-
-Vuelve a ejecutar:
-
-```bash
-python demo_hill_climbing.py --mode live
-```
-
-Luego abre [LangSmith](https://smith.langchain.com), entra a **Tracing** y selecciona `S5-HillClimbing-Reactivacion`. Verás una corrida principal con nodos anidados. Abre `redactar` para inspeccionar el prompt y la respuesta. Abre `medir` y el output final para revisar el historial de puntajes.
-
-> Nunca uses las llaves del facilitador. Cada persona debe trabajar con sus propias credenciales y conservar `.env` fuera de Git.
-
-## 7. Cómo ocurre “otra iteración”
-
-Hay dos conceptos diferentes:
-
-**Otra iteración dentro de la misma corrida.** Después de `evaluar`, `ruta_decision` devuelve `seguir`. LangGraph regresa automáticamente al nodo `redactar`. El máximo predeterminado es cinco.
-
-**Otra corrida completa.** Vuelve a ejecutar el comando. Esa ejecución comienza con estado vacío y, si el tracing está activo, crea una nueva traza en LangSmith.
-
-Puedes cambiar el límite del modo en vivo:
-
-```bash
-python demo_hill_climbing.py --mode live --max-iterations 8
-```
-
-El sistema también se detiene si llega a 95 puntos o acumula tres intentos consecutivos sin mejora. Estos límites evitan ciclos infinitos y gasto sin control.
-
-## 8. Cómo leer el código sin perderte
-
-Sigue este orden dentro de `demo_hill_climbing.py`:
-
-1. `HillState` define la memoria de trabajo que viaja entre nodos.
-2. `evaluar_mensaje()` convierte un borrador en rasgos observables y un puntaje.
-3. `proveedor_replay()` y `proveedor_live()` determinan de dónde sale cada nuevo borrador.
-4. `construir_grafo()` conecta `redactar`, `medir` y `evaluar`.
-5. `ruta_decision()` decide continuar o terminar.
-6. `ejecutar_demo()` inicia el estado e invoca el grafo.
-
-## 9. Límites del ejercicio
-
-La métrica es una rúbrica didáctica, no una predicción estadística. El sistema no conoce aperturas, respuestas ni conversiones reales. Una aplicación productiva necesitaría datos válidos, control de sesgos, pruebas A/B, privacidad, aprobación humana y una función objetivo ligada al resultado de negocio.
+Estos límites evitan un ciclo infinito y gasto sin control en el modo en vivo.
 
 ## Referencias
 
-[1]: https://docs.langchain.com/oss/python/langgraph/quickstart "LangGraph Python quickstart"
-[2]: https://docs.langchain.com/langsmith/observability-quickstart "LangSmith observability quickstart"
-[3]: https://docs.langchain.com/langsmith/log-traces-to-project "Log traces to a specific LangSmith project"
-[4]: https://openrouter.ai/docs/quickstart "OpenRouter quickstart"
+[1]: https://docs.langchain.com/langsmith/create-account-api-key "Create an account and API key · LangSmith Docs"
+[2]: https://docs.langchain.com/langsmith/quick-start-studio "Get started with LangSmith Studio"
+[3]: https://docs.langchain.com/langsmith/observability-quickstart "LangSmith observability quickstart"
+[4]: https://docs.langchain.com/langsmith/log-traces-to-project "Log traces to a specific LangSmith project"
+[5]: https://docs.langchain.com/oss/python/langgraph/quickstart "LangGraph Python quickstart"
+[6]: https://openrouter.ai/docs/quickstart "OpenRouter quickstart"

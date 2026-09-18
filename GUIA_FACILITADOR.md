@@ -1,113 +1,148 @@
-# Guía del facilitador · Walkthrough de Hill Climbing
+# Guía del facilitador · Ejercicio 100% guiado en LangSmith
 
 **Claude para Productividad · Nivel 2 · S5**
 
-Esta guía permite conducir una demostración de 12–15 minutos para una audiencia básica/intermedia. El objetivo no es enseñar Python; es hacer visible la diferencia entre **generar una respuesta** y **operar un ciclo que mide, decide y mejora**.
+Esta guía conduce una actividad de **12 minutos**. El alumno no elige archivos, comandos, modelos ni parámetros. Crea una llave personal, abre Colab, ejecuta todo y entra a su propia traza.
 
-## Preparación
+## Resultado de aprendizaje
 
-Antes de la sesión, confirma que el repositorio abre correctamente y deja disponibles estas tres pantallas:
+Al terminar, cada participante debe poder señalar en LangSmith:
 
-1. `assets/grafo-langgraph.png`
-2. `assets/traza-langsmith.png`
-3. `assets/curva-hill-climbing.png`
+1. dónde comienza una corrida;
+2. qué nodos se repiten;
+3. dónde se conserva el mejor resultado;
+4. por qué la ronda 4 se descarta;
+5. por qué una mala métrica haría que el sistema optimizara algo incorrecto.
 
-Si mostrarás LangSmith en vivo, entra a tu cuenta, abre **Tracing** y localiza el proyecto `S5-HillClimbing-Reactivacion`. Comprueba que la corrida carga. No muestres la sección de llaves ni archivos `.env`.
+## Preparación del facilitador
 
-## Apertura · 90 segundos
+Antes de la clase:
 
-Muestra el primer borrador dentro de `resultados/corrida-referencia.json` y di:
+- abre el [repositorio](https://github.com/nabolom/curso-claude-productividad-s5);
+- prueba el botón **Abrir en Google Colab**;
+- deja abiertas las imágenes `assets/traza-langsmith.png` y `assets/curva-hill-climbing.png` como Plan B;
+- pide a cada alumno iniciar sesión en [LangSmith](https://smith.langchain.com) antes del bloque;
+- no compartas tu llave ni pidas que los alumnos peguen la suya en el chat.
 
-> “Un prompt normal termina cuando Claude responde. Este sistema hace algo distinto: toma la respuesta como un intento, la mide y decide si merece conservarla. Si todavía hay oportunidad de mejorar, vuelve a redactar.”
+## Minuto 0–2 · Enmarcar
 
-Aclara desde el inicio:
+Di exactamente:
 
-> “La métrica de esta demo es simulada y transparente. No estamos diciendo que 70 sea una tasa real de respuesta. Estamos aislando el mecanismo para poder observarlo.”
+> “No van a programar. Van a ejecutar un agente y luego van a entrar a su caja negra. Google Colab corre el sistema; LangSmith nos deja observar lo que hizo.”
 
-## El grafo · 3 minutos
+Después:
 
-Muestra `assets/grafo-langgraph.png`. LangGraph representa este tipo de ejecución mediante estado, nodos, conexiones y rutas condicionales.[3] Recorre los nodos en orden:
+> “Los textos ya están preparados para que todos obtengamos la misma evidencia. Lo que se ejecuta de nuevo es el grafo: cada nodo, cada medición, cada decisión y la traza que aparecerá en su cuenta.”
 
-- **Redactar:** Claude produce una versión.
-- **Medir:** una función determinista revisa rasgos observables.
-- **Evaluar:** compara el intento con el mejor puntaje histórico.
-- **Decidir:** termina o regresa a redactar.
+## Minuto 2–4 · Crear la llave
 
-La frase central es:
+Proyecta estas instrucciones:
 
-> “La autonomía no está en que Claude escriba. Está en que el sistema puede decidir si necesita otra vuelta sin que una persona vuelva a presionar un botón.”
+1. Abre `https://smith.langchain.com/settings`.
+2. Entra a **API Keys**.
+3. Selecciona **Create API Key**.
+4. Elige una llave personal.
+5. Copia la llave y no cierres todavía LangSmith.
 
-No digas que el agente “aprendió solo”. La formulación precisa es:
+Di:
 
-> “El agente optimizó dentro de una corrida, usando una métrica y conservando el mejor resultado. No cambió los parámetros del modelo ni adquirió memoria permanente.”
+> “La llave funciona como contraseña. No la pongan en Zoom, Slack o el chat. El notebook abre un campo oculto y la retira de memoria al terminar.”
 
-## La traza en LangSmith · 4 minutos
+LangSmith recomienda una Personal Access Token para scripts personales y solo muestra el valor una vez.[1]
 
-Muestra `assets/traza-langsmith.png` o abre la corrida real. Señala el patrón repetido a la izquierda.
+## Minuto 4–7 · Ejecutar
 
-> “LangSmith es la capa de observabilidad. El agente no vive aquí; aquí vemos la evidencia de lo que ejecutó el código. Cada bloque `redactar → medir → evaluar → decidir` es una vuelta del loop.”
+Pide que vuelvan al README del repositorio y hagan clic en **Abrir en Google Colab**.
 
-Al abrir un nodo `redactar`, señala la entrada y la salida:
+Di exactamente:
 
-> “En la entrada viajan la cuenta, el mejor mensaje hasta ahora y el diagnóstico. En la salida aparece el nuevo intento de Claude.”
+> “Arriba, abran `Entorno de ejecución` y elijan `Ejecutar todas`. No cambien ninguna celda.”
 
-Si preguntan por `ChatOpenAI`, responde:
+Cuando aparezca el campo:
 
-> “Es el nombre del adaptador compatible con el protocolo de OpenAI. En esta corrida, el modelo detrás del adaptador es Claude Haiku servido mediante OpenRouter.”
+> “Peguen su llave en `Pega tu API key de LangSmith` y presionen Enter. Aunque parezca vacío, sí se está capturando: el texto está oculto.”
 
-LangSmith documenta que las trazas pueden capturar la jerarquía completa de una ejecución y agruparse por proyecto.[1] [2]
+Pide que levanten la mano cuando vean:
 
-## La curva · 3 minutos
+```text
+✅ TU TRAZA ESTÁ LISTA
+```
 
-Muestra `assets/curva-hill-climbing.png` y recorre los valores:
+## Minuto 7–10 · Encontrar evidencia
 
-> “El primer mensaje obtuvo 5. El segundo llegó a 50. Después subió a 62. La cuarta ronda también obtuvo 62: se probó una alternativa, pero no superó el récord, así que no reemplazó al mejor mensaje. La quinta llegó a 70.”
+Pide que abran el enlace generado. Dales esta misión:
 
-Haz la pregunta al grupo:
+> “Encuentren el patrón `redactar → medir → evaluar → decidir`. Cuenten cuántas veces aparece y localicen la secuencia 5, 50, 62, 62, 70.”
 
-> “¿La meseta de 62 a 62 es un fallo?”
+Haz estas preguntas en orden:
 
-La respuesta esperada es no. El guard rail funcionó: explorar no implica aceptar una versión peor o igual.
+1. “¿Qué nodo produce o recupera un intento?”
+2. “¿Qué nodo convierte el intento en un puntaje?”
+3. “¿Qué ocurrió en la ronda 4?”
+4. “¿Por qué el sistema conservó 62 en vez de reemplazarlo?”
 
-## El aprendizaje clave · 90 segundos
+La respuesta clave es:
 
-Cierra con esta escalera:
+> “Explorar no obliga a aceptar. La ronda 4 fue información útil porque confirmó que esa alternativa no superaba el mejor resultado.”
 
-| Nivel | Comportamiento |
+## Minuto 10–12 · Debrief
+
+Muestra `assets/curva-hill-climbing.png` y cierra con:
+
+> “Un prompt entrega una respuesta. Este loop mantiene estado, compara intentos y decide si vale la pena otra vuelta. La autonomía no está en escribir; está en decidir qué hacer después de escribir.”
+
+Luego pregunta:
+
+> “Si la métrica estuviera mal diseñada, ¿qué haría el agente?”
+
+Respuesta esperada:
+
+> “Optimizaría con mucha disciplina la cosa equivocada.”
+
+## Lo que verán y lo que no verán
+
+| Elemento | Estado |
 |---|---|
-| Prompt | Genera una respuesta. |
-| Workflow | Ejecuta pasos predefinidos. |
-| Verificación | Revisa si el resultado cumple reglas. |
-| Hill Climbing | Genera, mide, conserva el mejor y vuelve a intentar hasta detenerse. |
+| Grafo y nodos | Se ejecutan nuevamente en Colab. |
+| Traza | Se crea en la cuenta de cada alumno. |
+| Puntajes | Se recalculan en cada ejecución. |
+| Borradores | Se reproducen desde una corrida previa de Claude. |
+| Llamada nueva a Claude | No ocurre en la ruta oficial. |
+| Envío de correo | Nunca ocurre. |
 
-> “La calidad del loop depende de la calidad de la métrica. Si medimos mal, el sistema optimiza la cosa equivocada con mucha disciplina.”
+Esta elección evita pedir una llave de OpenRouter y elimina variabilidad durante la clase. La extensión avanzada conserva el modo `live` para quien quiera generar versiones nuevas después.
 
 ## Preguntas difíciles
 
 | Pregunta | Respuesta recomendada |
 |---|---|
-| ¿Dónde vive el agente? | En `demo_hill_climbing.py`. Claude vive en la nube y LangSmith guarda las trazas. |
-| ¿Cómo genero otra iteración? | Dentro de una corrida, el grafo vuelve solo a `redactar`. Para otra corrida completa, se ejecuta de nuevo el programa. |
-| ¿Esto reemplaza al humano? | No. El humano diseña la métrica, define límites y revisa el borrador final antes de cualquier acción. |
-| ¿La métrica de 70 es real? | No. Es una puntuación didáctica reproducible, no una predicción de respuesta. |
-| ¿Por qué no mejoró la ronda 4? | El modelo exploró una redacción distinta, pero la rúbrica no encontró una mejora. El sistema conservó el récord anterior. |
-| ¿Qué pasa si la métrica está mal? | El agente optimiza el objetivo equivocado. Diseñar y validar la métrica es la responsabilidad más importante. |
-| ¿Cuánto cuesta? | Depende del modelo, número de iteraciones y longitud del contexto. Revisa el consumo de tu propia traza y la tarifa vigente; no prometas una cifra fija. |
+| ¿Se ejecuta dentro de LangSmith? | No. Colab ejecuta LangGraph; LangSmith recibe y visualiza la traza. Studio puede conectarse a una app desplegada o local, pero requiere más configuración.[2] |
+| ¿Entonces dónde vive el agente? | En `demo_hill_climbing.py`, ejecutándose temporalmente en Google Colab. |
+| ¿Claude está respondiendo ahora? | No en la ruta oficial. Reproducimos cinco borradores reales ya guardados para que todos vean la misma curva. |
+| ¿La traza sí es mía y nueva? | Sí. El grafo vuelve a correr y LangSmith registra esa ejecución en la cuenta del alumno. |
+| ¿La métrica de 70 es real? | No. Es una rúbrica didáctica reproducible, no una predicción comercial. |
+| ¿Cómo genero texto nuevo? | Con la extensión avanzada y una llave propia de OpenRouter. No es necesaria en clase. |
+| ¿Por qué no usar LangSmith Studio? | Studio necesita una aplicación desplegada o un servidor local. Colab reduce pasos y cumple el objetivo de observar una traza propia.[2] |
 
-## Plan B
+## Troubleshooting en vivo
 
-Si falla internet, no intentes reparar credenciales frente al grupo. Usa las tres imágenes incluidas y `resultados/corrida-referencia.json`. El relato y la evidencia son los mismos; únicamente cambia que la interfaz está congelada.
+| Síntoma | Qué dices | Qué haces |
+|---|---|---|
+| La llave falla | “Crea una llave nueva y pégala sin espacios.” | Repite solo la celda **PASO 2**. |
+| No sale el campo oculto | “La segunda celda todavía no corrió.” | Pulsa el triángulo de **PASO 2**. |
+| No aparece el enlace | “La traza tarda unos segundos en indexarse.” | Espera 10 segundos y repite **PASO 2** y después **PASO 3**. |
+| Alguien no puede crear cuenta | “Usa el recorrido visual; no te quedas fuera del aprendizaje.” | Muestra la captura y forma una pareja con alguien que sí tenga traza. |
+| Falla Colab para todo el grupo | “La evidencia ya está capturada.” | Usa las tres imágenes del repositorio y conduce el mismo debrief. |
 
-## Checklist de seguridad
+## Guard rails
 
-- [ ] No mostrar ni proyectar llaves de API.
-- [ ] No usar datos reales de clientes.
-- [ ] No compartir acceso a la cuenta personal de LangSmith.
-- [ ] Recordar que el resultado es un borrador y no se envía.
-- [ ] Revocar cualquier llave que haya sido expuesta accidentalmente.
+- Nunca proyectes o pegues una API key.
+- Nunca uses datos reales de clientes.
+- Nunca pidas que una persona comparta acceso a su cuenta.
+- Nunca presentes el puntaje simulado como una métrica observada.
+- Nunca envíes el mensaje ganador; es un borrador didáctico.
 
 ## Referencias
 
-[1]: https://docs.langchain.com/langsmith/observability-quickstart "LangSmith observability quickstart"
-[2]: https://docs.langchain.com/langsmith/log-traces-to-project "Log traces to a specific LangSmith project"
-[3]: https://docs.langchain.com/oss/python/langgraph/quickstart "LangGraph Python quickstart"
+[1]: https://docs.langchain.com/langsmith/create-account-api-key "Create an account and API key · LangSmith Docs"
+[2]: https://docs.langchain.com/langsmith/quick-start-studio "Get started with LangSmith Studio"
