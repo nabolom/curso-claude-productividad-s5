@@ -27,7 +27,7 @@ La ruta oficial para alumnos ya no requiere terminal, instalación local ni una 
 | Código | Aprobado | El script principal y las celdas del notebook compilan. |
 | Estilo | Aprobado | El código pasa Ruff y conserva formato estable. |
 | Dependencias | Aprobado | Las versiones están fijadas y el entorno no reporta dependencias rotas. |
-| Pruebas | Aprobado | Las ocho pruebas automatizadas pasan. |
+| Pruebas | Aprobado | Las nueve pruebas automatizadas pasan, incluida la regresión de doble ejecución de PASO 1. |
 | Modo avanzado | Aprobado | Una corrida de una iteración recibió respuesta real de Claude mediante OpenRouter. |
 
 ## Qué puede afirmarse

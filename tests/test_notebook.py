@@ -56,6 +56,14 @@ class GuidedNotebookTests(unittest.TestCase):
             ["https://github.com/nabolom/curso-claude-productividad-s5.git"],
         )
 
+    def test_preparation_can_be_run_twice_in_the_same_runtime(self) -> None:
+        leave_repository = self.source.index("os.chdir(WORK_DIR)")
+        delete_repository = self.source.index("shutil.rmtree(REPO_DIR)")
+        self.assertLess(leave_repository, delete_repository)
+        self.assertIn("cwd=WORK_DIR", self.source)
+        self.assertIn("capture_output=True", self.source)
+        self.assertIn("No se pudo descargar el ejercicio", self.source)
+
 
 if __name__ == "__main__":
     unittest.main()

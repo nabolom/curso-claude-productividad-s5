@@ -75,6 +75,7 @@ LangGraph modela esta lógica mediante estado, nodos y rutas condicionales.[5]
 
 | Síntoma | Causa probable | Solución exacta |
 |---|---|---|
+| `No se pudo descargar el ejercicio` | Conexión temporal con GitHub | Comprueba internet y repite **PASO 1**. El mensaje ahora muestra el detalle real del error. |
 | `LangSmith no aceptó la llave` | Llave incompleta, vencida o con espacios | Crea una llave personal nueva y ejecuta otra vez la celda **PASO 2**. |
 | No aparece el campo para pegar | Colab no llegó a la segunda celda | Ejecuta manualmente la celda **PASO 2** con el botón triangular. |
 | La corrida terminó, pero no aparece el enlace | La ingestión tardó más de 16 segundos | Espera 10 segundos y repite **PASO 2** y después **PASO 3**. |
